@@ -1,18 +1,14 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const twilio = require('twilio');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-//app.use(cors({
-  //origin:'http://localhost:4200',
-  //methods:['GET','POST'],
-  //allowedHeaders:['Content-Type'],
-//}));
+app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB connection
@@ -23,6 +19,11 @@ mongoose.connect('mongodb+srv://JPRcrackers:Since2024@jprcrackers.bcz4s.mongodb.
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error(err));
 
+// Twilio configuration
+const accountSid = 'AC025d1c50eb4a99709568b2fb6e8cdbd6'; // Your Account SID
+const authToken = 'b7fcf1dc18f71da560cf70b6bfd999c6'; // Your Auth Token
+const client = twilio(accountSid, authToken);
+const twilioPhoneNumber = '+14159034427'; // Your Twilio phone number
 // Bill Schema
 const billSchema = new mongoose.Schema({
   customerInfo: {
@@ -57,13 +58,21 @@ app.post('/api/bills', async (req, res) => {
 
   try {
     await newBill.save();
-    res.status(201).json({ message: 'Bill saved successfully' });
+    
+    // Send SMS using Twilio
+    const message = `Congrtas!! New order Arrived!!\n Mr/Mrs ${customerInfo.name} with Rs. ${totalAmount}.\nDo check www.jprcrackers.com/admin for further details. Thank you!!!`;
+    await client.messages.create({
+      body: message,
+      from: twilioPhoneNumber,
+      to: '+916380331212',
+    });
+
+    res.status(201).json({ message: 'Bill saved successfully and SMS sent' });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to save bill' });
+    console.error(error);
+    res.status(500).json({ error: 'Failed to save bill or send SMS' });
   }
 });
-
-
 
 // API endpoint to fetch all bills
 app.get('/api/bills', async (req, res) => {

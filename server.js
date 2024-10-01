@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
     origin: 'http://localhost:4200', // Allow requests only from this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type','Authorization'],
 }));
 app.use(bodyParser.json());
 

@@ -47,7 +47,7 @@ const billSchema = new mongoose.Schema({
 });
 
 const Bill = mongoose.model('Bill', billSchema);
-
+app.options('*',cors());
 // API endpoint to save the bill
 app.post('/api/bills', async (req, res) => {
   const { customerInfo, items, totalAmount } = req.body;

@@ -9,7 +9,14 @@ const PORT = process.env.PORT || 5000;
 
 // CORS configuration
 const corsOptions = {
-    origin: process.env.FRONTEND_URL || 'http://localhost:4200', // Adjust this for production
+    origin: (origin, callback) => {
+        // Allow requests from localhost during development
+        if (origin === 'http://localhost:4200' || origin === process.env.FRONTEND_URL) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };

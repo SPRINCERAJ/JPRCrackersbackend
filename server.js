@@ -1,14 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-//const cors = require('cors');
+const cors = require('cors'); // Uncomment this
 const twilio = require('twilio'); 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // CORS configuration
-/*const corsOptions = {
+const corsOptions = {
     origin: (origin, callback) => {
         // Allow requests from localhost during development
         if (origin === 'http://localhost:4200' || origin === process.env.FRONTEND_URL) {
@@ -20,10 +20,10 @@ const PORT = process.env.PORT || 5000;
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
-*/
+
 // Middleware
-//app.use(cors(corsOptions));
-//app.options('*', cors()); // Handle preflight requests
+app.use(cors(corsOptions)); // Use CORS with the defined options
+app.options('*', cors()); // Handle preflight requests
 app.use(bodyParser.json());
 
 // MongoDB connection

@@ -8,11 +8,20 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 
-app.use(cors({
-        origin: "http://localhost:4200"
-    }
-))
-app.options('*', cors())
+app.use(cors());
+app.use(function (req,res,next){
+        res.header("Access-Control-Allow-Origin","*");
+        res.header(
+                "Access-Control-Allow-Methods",
+                "GET,POST"
+                );
+        res.header(
+                "Access-Control-Allow-Methods",
+                "Origin, X-Requested-With,Content-Type,Accept,Authorization"
+                );
+
+});
+//app.options('*', cors())
 // CORS configuration
 /*const corsOptions = {
     origin: (origin, callback) => {

@@ -7,8 +7,14 @@ const twilio = require('twilio');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+
+app.use(cors({
+        origin: "http://localhost:4200"
+    }
+))
+app.options('*', cors())
 // CORS configuration
-const corsOptions = {
+/*const corsOptions = {
     origin: (origin, callback) => {
         // Allow requests from localhost during development
         if (origin === 'http://localhost:4200' || origin === process.env.FRONTEND_URL) {
@@ -23,7 +29,7 @@ const corsOptions = {
 
 // Middleware
 app.use(cors(corsOptions)); // Use CORS with the defined options
-app.options('*', cors()); // Handle preflight requests
+app.options('*', cors()); // Handle preflight requests*/
 app.use(bodyParser.json());
 
 // MongoDB connection

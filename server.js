@@ -10,6 +10,9 @@ const PORT = process.env.PORT || 5000;
 // CORS configuration
 const corsOptions = {
     origin: '*', // Allow all origins
+            headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': 'true'},
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Specify allowed methods
     preflightContinue: false, // Do not pass the CORS preflight response to the next handler
     optionsSuccessStatus: 204, // Set a status code for successful OPTIONS requests
